@@ -1,0 +1,5 @@
+.coveragerc
+htmlgov
+.venv
+.coverage
+__pycache__/
