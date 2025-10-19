@@ -1,0 +1,30 @@
+[MASTER]
+
+ignore=index.py, single_file_to_ignore.py
+ignore-paths=src/tests
+
+[MESSAGE CONTROL]
+
+disable=raw-checker-failed,
+        bad-inline-option,
+        locally-disabled,
+        file-ignored,
+        suppressed-message,
+        useless-suppression,
+        deprecated-pragma,
+        use-symbolic-message-instead,
+        missing-module-docstring,
+        missing-function-docstring,
+        missing-class-docstring
+
+[FORMAT]
+max-line-length: 80
+indent-string: "    "
+max-statements: 15
+
+[REFACTORING]
+max-nested-blocks: 2
+
+[DESIGN]
+max-branches: 4
+

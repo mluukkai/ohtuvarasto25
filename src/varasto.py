@@ -1,16 +1,21 @@
 class Varasto:
     def __init__(self, tilavuus, alku_saldo = 0):
-        if tilavuus > 0.0:
-            self.tilavuus = tilavuus
-        else:
-            self.tilavuus = 0.0
+        self.tilavuus = self._tilavuus_alussa(tilavuus)
+        self.saldo = self._saldo_alussa(alku_saldo)
 
+    def _tilavuus_alussa(self, tilavuus):
+        if tilavuus <= 0.0:
+            return 0
+        return tilavuus
+
+    def _saldo_alussa(self, alku_saldo):
         if alku_saldo < 0.0:
-            self.saldo = 0.0
-        elif alku_saldo <= tilavuus:
-            self.saldo = alku_saldo
-        else:
-            self.saldo = tilavuus
+            return 0.0
+
+        if alku_saldo > self.tilavuus:
+            return self.tilavuus
+
+        return alku_saldo
 
     def paljonko_mahtuu(self):
         return self.tilavuus - self.saldo
