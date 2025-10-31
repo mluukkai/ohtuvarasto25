@@ -134,8 +134,10 @@ class VarastoUI:
         print(f"Tilavuus: {varasto.tilavuus}")
         print(f"Saldo: {varasto.saldo}")
         print(f"Vapaata tilaa: {varasto.paljonko_mahtuu()}")
-        print(f"Täyttöaste: {(varasto.saldo / varasto.tilavuus * 100):.1f}%")
-
+        if varasto.tilavuus == 0:
+            print("Täyttöaste: Ei määritetty (tilavuus 0)")
+        else:
+            print(f"Täyttöaste: {(varasto.saldo / varasto.tilavuus * 100):.1f}%")
     def poista_varasto(self):
         varasto_id = self.valitse_varasto("poisto")
         if varasto_id is None:
