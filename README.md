@@ -56,8 +56,25 @@ poetry run python index.py
 
 ### Running Tests
 
+**Unit Tests:**
 ```bash
 poetry run pytest
+```
+
+**E2E Tests with Robot Framework:**
+```bash
+./run_robot_tests.sh
+```
+
+Or manually:
+```bash
+# Terminal 1: Start Flask application
+cd src
+export FLASK_DEBUG=false
+poetry run python app.py
+
+# Terminal 2: Run Robot tests
+poetry run robot --outputdir robot-results src/tests/robot/varasto_web.robot
 ```
 
 ### Linting
