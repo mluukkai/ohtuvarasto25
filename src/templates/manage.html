@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}Manage {{ name }} - Warehouse Management{% endblock %}
+
+{% block content %}
+    <h1>Manage Warehouse: {{ name }}</h1>
+
+    <div class="warehouse-info">
+        <h2>Warehouse Details</h2>
+        <p><strong>Capacity:</strong> {{ warehouse.tilavuus }}</p>
+        <p><strong>Current Balance:</strong> {{ warehouse.saldo }}</p>
+        <p><strong>Available Space:</strong> {{ warehouse.paljonko_mahtuu() }}</p>
+    </div>
+
+    <h2>Add or Remove Content</h2>
+
+    <form method="POST" action="{{ url_for('manage_warehouse', name=name) }}">
+        <div class="form-group">
+            <label for="amount">Amount:</label>
+            <input type="number" id="amount" name="amount" step="0.01" min="0.01" required placeholder="Enter amount">
+        </div>
+
+        <div class="form-group">
+            <button type="submit" name="action" value="add" class="btn btn-success">Add Content</button>
+            <button type="submit" name="action" value="remove" class="btn btn-danger">Remove Content</button>
+        </div>
+    </form>
+
+    <div style="margin-top: 20px;">
+        <a href="{{ url_for('index') }}" class="btn" style="background-color: #6c757d;">Back to List</a>
+    </div>
+{% endblock %}

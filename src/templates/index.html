@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}Warehouse List - Warehouse Management{% endblock %}
+
+{% block content %}
+    <h1>Warehouse Management System</h1>
+
+    {% if warehouses %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Capacity</th>
+                    <th>Current Balance</th>
+                    <th>Available Space</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for name, warehouse in warehouses.items() %}
+                    <tr>
+                        <td><strong>{{ name }}</strong></td>
+                        <td>{{ warehouse.tilavuus }}</td>
+                        <td>{{ warehouse.saldo }}</td>
+                        <td>{{ warehouse.paljonko_mahtuu() }}</td>
+                        <td class="actions">
+                            <a href="{{ url_for('manage_warehouse', name=name) }}" class="btn btn-success">Manage</a>
+                            <form method="POST" action="{{ url_for('delete_warehouse', name=name) }}" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete warehouse {{ name }}?');">
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No warehouses found. <a href="{{ url_for('create_warehouse') }}">Create your first warehouse</a></p>
+    {% endif %}
+
+    <div style="margin-top: 20px;">
+        <a href="{{ url_for('create_warehouse') }}" class="btn">Create New Warehouse</a>
+    </div>
+{% endblock %}
