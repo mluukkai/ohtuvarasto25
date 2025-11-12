@@ -2,3 +2,6 @@ htmlgov
 .venv
 .coverage
 __pycache__/
+robot-results/
+.pytest_cache/
+*.pyc

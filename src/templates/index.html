@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Varasto - Varastonhallinta</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>🏪 Varastonhallintajärjestelmä</h1>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        {% if warehouses %}
+            <div class="warehouse-header">
+                <span>Varastot ({{ warehouses|length }})</span>
+                <a href="{{ url_for('new_warehouse') }}" class="btn-link">
+                    <button>+ Luo uusi varasto</button>
+                </a>
+            </div>
+            <div class="warehouses-grid">
+                {% for id, warehouse_data in warehouses.items() %}
+                    {% set varasto = warehouse_data.varasto %}
+                    {% set saldo_prosentti = (varasto.saldo / varasto.tilavuus * 100) if varasto.tilavuus > 0 else 0 %}
+                    <div class="warehouse-card">
+                        <div class="warehouse-name">{{ warehouse_data.name }}</div>
+
+                        <div class="warehouse-info">
+                            <div class="info-row">
+                                <span class="info-label">Saldo:</span>
+                                <span class="info-value">{{ "%.2f"|format(varasto.saldo) }}</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Tilavuus:</span>
+                                <span class="info-value">{{ "%.2f"|format(varasto.tilavuus) }}</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Vapaana:</span>
+                                <span class="info-value">{{ "%.2f"|format(varasto.paljonko_mahtuu()) }}</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: {{ saldo_prosentti }}%">
+                                    {{ "%.0f"|format(saldo_prosentti) }}%
+                                </div>
+                            </div>
+                        </div>
+
+                        <form method="POST" action="{{ url_for('add_to_warehouse', warehouse_id=id) }}" class="warehouse-actions">
+                            <input type="number" name="maara" step="0.1" placeholder="Määrä" required>
+                            <button type="submit" class="btn-add">Lisää</button>
+                        </form>
+
+                        <form method="POST" action="{{ url_for('take_from_warehouse', warehouse_id=id) }}" class="warehouse-actions">
+                            <input type="number" name="maara" step="0.1" placeholder="Määrä" required>
+                            <button type="submit" class="btn-take">Ota</button>
+                        </form>
+
+                        <form method="POST" action="{{ url_for('delete_warehouse', warehouse_id=id) }}" class="delete-form">
+                            <button type="submit" class="btn-delete" onclick="return confirm('Haluatko varmasti poistaa varaston {{ warehouse_data.name }}?')">Poista varasto</button>
+                        </form>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <p>📦 Ei varastoja. Luo ensimmäinen varastosi!</p>
+                <div style="margin-top: 20px;">
+                    <a href="{{ url_for('new_warehouse') }}" class="btn-link">
+                        <button>+ Luo uusi varasto</button>
+                    </a>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
+
