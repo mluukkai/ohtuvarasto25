@@ -4,237 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Varasto - Varastonhallinta</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        
-        h1 {
-            color: white;
-            text-align: center;
-            margin-bottom: 30px;
-            font-size: 2.5em;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
-        
-        .card {
-            background: white;
-            border-radius: 10px;
-            padding: 25px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-        
-        .create-form {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            align-items: end;
-        }
-        
-        .form-group {
-            display: flex;
-            flex-direction: column;
-        }
-        
-        label {
-            font-weight: bold;
-            margin-bottom: 5px;
-            color: #333;
-        }
-        
-        input[type="text"],
-        input[type="number"] {
-            padding: 10px;
-            border: 2px solid #e0e0e0;
-            border-radius: 5px;
-            font-size: 14px;
-            transition: border-color 0.3s;
-        }
-        
-        input[type="text"]:focus,
-        input[type="number"]:focus {
-            outline: none;
-            border-color: #667eea;
-        }
-        
-        button {
-            padding: 10px 20px;
-            background: #667eea;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: bold;
-            transition: background 0.3s;
-        }
-        
-        button:hover {
-            background: #5568d3;
-        }
-        
-        .btn-add {
-            background: #10b981;
-        }
-        
-        .btn-add:hover {
-            background: #059669;
-        }
-        
-        .btn-take {
-            background: #f59e0b;
-        }
-        
-        .btn-take:hover {
-            background: #d97706;
-        }
-        
-        .btn-delete {
-            background: #ef4444;
-        }
-        
-        .btn-delete:hover {
-            background: #dc2626;
-        }
-        
-        .warehouses-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 20px;
-        }
-        
-        .warehouse-card {
-            background: white;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-        
-        .warehouse-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 12px rgba(0,0,0,0.15);
-        }
-        
-        .warehouse-name {
-            font-size: 1.5em;
-            font-weight: bold;
-            color: #667eea;
-            margin-bottom: 15px;
-        }
-        
-        .warehouse-info {
-            background: #f3f4f6;
-            padding: 15px;
-            border-radius: 5px;
-            margin-bottom: 15px;
-        }
-        
-        .info-row {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 10px;
-            font-size: 14px;
-        }
-        
-        .info-row:last-child {
-            margin-bottom: 0;
-        }
-        
-        .info-label {
-            font-weight: bold;
-            color: #666;
-        }
-        
-        .info-value {
-            color: #333;
-        }
-        
-        .progress-bar {
-            background: #e0e0e0;
-            border-radius: 10px;
-            height: 20px;
-            margin: 10px 0;
-            overflow: hidden;
-        }
-        
-        .progress-fill {
-            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
-            height: 100%;
-            transition: width 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 12px;
-            font-weight: bold;
-        }
-        
-        .warehouse-actions {
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 10px;
-            margin-bottom: 10px;
-        }
-        
-        .warehouse-actions input {
-            padding: 8px;
-        }
-        
-        .warehouse-actions button {
-            padding: 8px 15px;
-        }
-        
-        .alert {
-            padding: 15px;
-            border-radius: 5px;
-            margin-bottom: 20px;
-            font-weight: bold;
-        }
-        
-        .alert-success {
-            background: #d1fae5;
-            color: #065f46;
-            border: 2px solid #10b981;
-        }
-        
-        .alert-error {
-            background: #fee2e2;
-            color: #991b1b;
-            border: 2px solid #ef4444;
-        }
-        
-        .empty-state {
-            text-align: center;
-            padding: 40px;
-            color: white;
-            font-size: 1.2em;
-        }
-        
-        .delete-form {
-            margin-top: 10px;
-        }
-    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <div class="container">
         <h1>🏪 Varastonhallintajärjestelmä</h1>
-        
+
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
                 {% for category, message in messages %}
@@ -244,37 +19,21 @@
                 {% endfor %}
             {% endif %}
         {% endwith %}
-        
-        <div class="card">
-            <h2 style="margin-bottom: 20px; color: #333;">Luo uusi varasto</h2>
-            <form method="POST" action="{{ url_for('create_warehouse') }}" class="create-form">
-                <div class="form-group">
-                    <label for="name">Nimi:</label>
-                    <input type="text" id="name" name="name" placeholder="esim. Mehuvarasto" required>
-                </div>
-                <div class="form-group">
-                    <label for="tilavuus">Tilavuus:</label>
-                    <input type="number" id="tilavuus" name="tilavuus" step="0.1" placeholder="esim. 100.0" required>
-                </div>
-                <div class="form-group">
-                    <label for="alku_saldo">Alkusaldo:</label>
-                    <input type="number" id="alku_saldo" name="alku_saldo" step="0.1" value="0" placeholder="esim. 0.0">
-                </div>
-                <div class="form-group">
-                    <button type="submit">Luo varasto</button>
-                </div>
-            </form>
-        </div>
-        
+
         {% if warehouses %}
-            <h2 style="color: white; margin-bottom: 20px; font-size: 1.8em;">Varastot ({{ warehouses|length }})</h2>
+            <div class="warehouse-header">
+                <span>Varastot ({{ warehouses|length }})</span>
+                <a href="{{ url_for('new_warehouse') }}" class="btn-link">
+                    <button>+ Luo uusi varasto</button>
+                </a>
+            </div>
             <div class="warehouses-grid">
                 {% for id, warehouse_data in warehouses.items() %}
                     {% set varasto = warehouse_data.varasto %}
                     {% set saldo_prosentti = (varasto.saldo / varasto.tilavuus * 100) if varasto.tilavuus > 0 else 0 %}
                     <div class="warehouse-card">
                         <div class="warehouse-name">{{ warehouse_data.name }}</div>
-                        
+
                         <div class="warehouse-info">
                             <div class="info-row">
                                 <span class="info-label">Saldo:</span>
@@ -294,17 +53,17 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <form method="POST" action="{{ url_for('add_to_warehouse', warehouse_id=id) }}" class="warehouse-actions">
                             <input type="number" name="maara" step="0.1" placeholder="Määrä" required>
                             <button type="submit" class="btn-add">Lisää</button>
                         </form>
-                        
+
                         <form method="POST" action="{{ url_for('take_from_warehouse', warehouse_id=id) }}" class="warehouse-actions">
                             <input type="number" name="maara" step="0.1" placeholder="Määrä" required>
                             <button type="submit" class="btn-take">Ota</button>
                         </form>
-                        
+
                         <form method="POST" action="{{ url_for('delete_warehouse', warehouse_id=id) }}" class="delete-form">
                             <button type="submit" class="btn-delete" onclick="return confirm('Haluatko varmasti poistaa varaston {{ warehouse_data.name }}?')">Poista varasto</button>
                         </form>
@@ -313,9 +72,15 @@
             </div>
         {% else %}
             <div class="empty-state">
-                <p>📦 Ei varastoja. Luo ensimmäinen varastosi yllä olevalla lomakkeella!</p>
+                <p>📦 Ei varastoja. Luo ensimmäinen varastosi!</p>
+                <div style="margin-top: 20px;">
+                    <a href="{{ url_for('new_warehouse') }}" class="btn-link">
+                        <button>+ Luo uusi varasto</button>
+                    </a>
+                </div>
             </div>
         {% endif %}
     </div>
 </body>
 </html>
+

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luo uusi varasto - Varastonhallinta</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>🏪 Varastonhallintajärjestelmä</h1>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <div class="card">
+            <h2>Luo uusi varasto</h2>
+            <form method="POST" action="{{ url_for('create_warehouse') }}" class="create-form">
+                <div class="form-group">
+                    <label for="name">Nimi:</label>
+                    <input type="text" id="name" name="name" placeholder="esim. Mehuvarasto" required>
+                </div>
+                <div class="form-group">
+                    <label for="tilavuus">Tilavuus:</label>
+                    <input type="number" id="tilavuus" name="tilavuus" step="0.1" placeholder="esim. 100.0" required>
+                </div>
+                <div class="form-group">
+                    <label for="alku_saldo">Alkusaldo:</label>
+                    <input type="number" id="alku_saldo" name="alku_saldo" step="0.1" value="0" placeholder="esim. 0.0">
+                </div>
+                <div class="form-group">
+                    <button type="submit">Luo varasto</button>
+                </div>
+            </form>
+            <div style="margin-top: 20px;">
+                <a href="{{ url_for('index') }}" class="btn-link">
+                    <button type="button">← Takaisin</button>
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

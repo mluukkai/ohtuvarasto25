@@ -16,6 +16,12 @@ def index():
     return render_template('index.html', warehouses=warehouses)
 
 
+@app.route('/new')
+def new_warehouse():
+    """Display form to create a new warehouse."""
+    return render_template('new.html')
+
+
 @app.route('/create', methods=['POST'])
 def create_warehouse():  # pylint: disable=too-many-statements
     """Create a new warehouse."""
