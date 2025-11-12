@@ -36,6 +36,13 @@ poetry run python app.py
 
 Then open your browser and navigate to `http://127.0.0.1:5000`
 
+**Note:** For development with debugging features, set the `FLASK_DEBUG` environment variable:
+
+```bash
+cd src
+FLASK_DEBUG=true poetry run python app.py
+```
+
 ### Command Line Interface
 
 Run the original command-line demo:
